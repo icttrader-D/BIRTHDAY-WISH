@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 18th Birthday Fiza Arooj! ❤️</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #ff4d6d;
+            --secondary-color: #ffb3c1;
+            --accent-color: #c9184a;
+            --bg-gradient: linear-gradient(135deg, #0f0c20 0%, #2b1055 50%, #591a73 100%);
+            --glass-bg: rgba(255, 255, 255, 0.12);
+            --glass-border: rgba(255, 255, 255, 0.25);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-gradient);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Floating Hearts Background */
+        #heartCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 520px;
+            z-index: 10;
+            margin: 20px auto;
+        }
+
+        /* Stage Cards Design */
+        .stage-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 30px 22px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            display: none;
+            animation: fadeIn 0.7s ease-in-out forwards;
+            position: relative;
+        }
+
+        .stage-card.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        h1, h2 {
+            font-family: 'Dancing Script', cursive;
+            color: #ff8fa3;
+            margin-bottom: 15px;
+        }
+
+        h1 { font-size: 2.8rem; text-shadow: 0 0 12px rgba(255, 77, 109, 0.6); }
+        h2 { font-size: 2.2rem; }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #f8edeb;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #ff4d6d, #ff758f);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+            transition: all 0.3s ease;
+            outline: none;
+            margin: 8px 4px;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 8px 20px rgba(255, 77, 109, 0.6);
+        }
+
+        /* Stage 2: Do You Love Me */
+        .love-stage-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            min-height: 90px;
+            position: relative;
+        }
+
+        #btnNo {
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        /* Quiz Options Styling */
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 12px 15px;
+            border-radius: 15px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+        }
+
+        .quiz-btn:hover {
+            background: rgba(255, 77, 109, 0.4);
+            border-color: #ff4d6d;
+        }
+
+        /* Interactive Cake Styling */
+        .cake-container {
+            margin: 35px auto 25px auto;
+            width: 180px;
+            height: 180px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .cake-base {
+            width: 160px;
+            height: 60px;
+            background: #ff758f;
+            border-radius: 12px 12px 0 0;
+            position: absolute;
+            bottom: 0;
+            left: 10px;
+            box-shadow: inset 0 -10px 0 rgba(0,0,0,0.15);
+        }
+
+        .cake-middle {
+            width: 120px;
+            height: 50px;
+            background: #ffb3c1;
+            border-radius: 10px 10px 0 0;
+            position: absolute;
+            bottom: 60px;
+            left: 30px;
+        }
+
+        .cake-top {
+            width: 80px;
+            height: 40px;
+            background: #ffffff;
+            border-radius: 10px 10px 0 0;
+            position: absolute;
+            bottom: 110px;
+            left: 50px;
+        }
+
+        .candle {
+            width: 10px;
+            height: 30px;
+            background: repeating-linear-gradient(45deg, #fff, #fff 5px, #ff4d6d 5px, #ff4d6d 10px);
+            position: absolute;
+            bottom: 150px;
+            left: 85px;
+            border-radius: 3px;
+        }
+
+        .flame {
+            width: 14px;
+            height: 22px;
+            background: #ffb703;
+            border-radius: 50% 50% 20% 20%;
+            position: absolute;
+            top: -20px;
+            left: -2px;
+            box-shadow: 0 0 15px #ffb703;
+            animation: flicker 0.6s infinite alternate;
+        }
+
+        .flame.off { display: none; }
+
+        @keyframes flicker {
+            0% { transform: scale(1) rotate(-2deg); }
+            100% { transform: scale(1.15) rotate(2deg); }
+        }
+
+        /* Grid Flip Memory Cards */
+        .reason-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .flip-card {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px 10px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .flip-card:hover {
+            transform: scale(1.03);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Cakes Photo Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .gallery-grid img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Custom Popup */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .popup-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .popup-box {
+            background: #2b1055;
+            border: 2px solid var(--primary-color);
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 320px;
+        }
+
+        /* Exit Screen Overlay */
+        #exitOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0f0c20;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #exitOverlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Attached Music track autoplay -->
+    <audio id="bgMusic" loop autoplay>
+        <source src="Happy Birthday Song _ Birthday Song for Someone Special.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Floating Heart Canvas Particles -->
+    <canvas id="heartCanvas"></canvas>
+
+    <div class="container">
+
+        <!-- STAGE 1: Welcome Intro -->
+        <div class="stage-card active" id="stage1">
+            <h1>Happy 18th Birthday! ✨</h1>
+            <h2>Fiza Arooj ❤️</h2>
+            <p>Today is October 29, 2026 — the official day the world became a much sweeter place! 🌸 Welcome to your special 18th birthday surprise experience! 🎉</p>
+            <button class="btn" onclick="nextStage(2)">Start Our Journey 💕</button>
+        </div>
+
+        <!-- STAGE 2: Do You Love Me? Challenge -->
+        <div class="stage-card" id="stage2">
+            <h1>An Honest Question 🙈</h1>
+            <p style="font-size: 1.2rem; font-weight: 600;">Do you love me as much as I love you? ❤️</p>
+            <div class="love-stage-buttons">
+                <button class="btn" id="btnYes" onclick="onYesClick()">YES! 😍</button>
+                <button class="btn" id="btnNo" onmouseover="dodgeNo()" onclick="showNoPopup()">NO 😜</button>
+            </div>
+        </div>
+
+        <!-- STAGE 3: Romantic Funny Quiz Q1 -->
+        <div class="stage-card" id="stage3">
+            <h1>Fun Quiz #1 👑</h1>
+            <p style="font-weight: 600;">Who is the real boss in our relationship?</p>
+            <div class="quiz-options">
+                <button class="quiz-btn" onclick="quizAnswer(true, 'Obviously Fiza! She rules everything! 👸👑', 4)">A) Fiza Arooj (The Queen) 👸</button>
+                <button class="quiz-btn" onclick="quizAnswer(false, 'Wrong! Fiza is the boss forever! 😜', 3)">B) Me 😎</button>
+                <button class="quiz-btn" onclick="quizAnswer(true, '100% Correct! Fiza always wins! 💕', 4)">C) Fiza 100% ❤️</button>
+            </div>
+            <p id="quizFeedback1" style="color: #ff8fa3; font-size: 0.95rem;"></p>
+        </div>
+
+        <!-- STAGE 4: Romantic Funny Quiz Q2 -->
+        <div class="stage-card" id="stage4">
+            <h1>Fun Quiz #2 🍫</h1>
+            <p style="font-weight: 600;">What is the fastest way to make Fiza smile?</p>
+            <div class="quiz-options">
+                <button class="quiz-btn" onclick="quizAnswer(true, 'Aww yes! Lots of love & attention! 🥰', 5)">A) Giving her unlimited love & attention 💕</button>
+                <button class="quiz-btn" onclick="quizAnswer(true, 'Chocolates & sweet surprises! 🍫✨', 5)">B) Yummy chocolates & food 🍕</button>
+                <button class="quiz-btn" onclick="quizAnswer(true, 'All of the above! 💖', 5)">C) ALL OF THE ABOVE! 😍</button>
+            </div>
+            <p id="quizFeedback2" style="color: #ff8fa3; font-size: 0.95rem;"></p>
+        </div>
+
+        <!-- STAGE 5: Multi-Tier Birthday Cake & Candle -->
+        <div class="stage-card" id="stage5">
+            <h1>Make A Wish, Fiza! 🎂</h1>
+            <p>Tap on the candle flame to blow out your 18th birthday candle!</p>
+            <div class="cake-container" onclick="blowCandle()">
+                <div class="cake-base"></div>
+                <div class="cake-middle"></div>
+                <div class="cake-top"></div>
+                <div class="candle">
+                    <div class="flame" id="candleFlame"></div>
+                </div>
+            </div>
+            <p id="candleStatus" style="font-size: 0.95rem; color: #ff8fa3;">🔥 Candle is glowing...</p>
+            <button class="btn" id="afterCakeBtn" style="display: none;" onclick="nextStage(6)">Read My Loving Wish 💌</button>
+        </div>
+
+        <!-- STAGE 6: Super Long Romantic Wish -->
+        <div class="stage-card" id="stage6">
+            <h1>My Loving Wish For You 💖✨</h1>
+            <div style="text-align: left; font-size: 0.92rem; line-height: 1.8; max-height: 250px; overflow-y: auto; padding-right: 8px;">
+                Dearest Fiza Arooj ❤️,<br><br>
+                Happy 18th Birthday to the most special, beautiful, and cute soul in my life! 🎉🎂 Entering your 18th year is such a huge milestone, and I couldn't be happier to celebrate it with you! ✨<br><br>
+                May your life be filled with unlimited smiles, endless happiness, chocolates, success, and pure magic! 🌸 You have this adorable power to make everything brighter just by existing. Every single day with you feels like a blessing.<br><br>
+                Never stop shining, never stop smiling, and always remember how deeply loved and cherished you are. Happy 18th Birthday once again, my star! 🌟💖🎈
+            </div>
+            <br>
+            <button class="btn" onclick="nextStage(7)">Why You Are My Favorite 🌟</button>
+        </div>
+
+        <!-- STAGE 7: Reasons Why Cards -->
+        <div class="stage-card" id="stage7">
+            <h1>Reasons You're Special 💖</h1>
+            <p>Tap cards to reveal secret notes!</p>
+            <div class="reason-grid">
+                <div class="flip-card" onclick="this.innerText='Your Cute Smile 😊'">1. Tap Me 💌</div>
+                <div class="flip-card" onclick="this.innerText='Your Kind Heart ❤️'">2. Tap Me 💌</div>
+                <div class="flip-card" onclick="this.innerText='Your Caring Soul 🌸'">3. Tap Me 💌</div>
+                <div class="flip-card" onclick="this.innerText='Everything About You ✨'">4. Tap Me 💌</div>
+            </div>
+            <button class="btn" onclick="nextStage(8)">The Most Important Note 🌹</button>
+        </div>
+
+        <!-- STAGE 8: Thanks For Coming Into My Life -->
+        <div class="stage-card" id="stage8">
+            <h1>From The Heart 💖</h1>
+            <p style="font-size: 1.4rem; line-height: 1.8; color: #ffb3c1; font-family: 'Dancing Script', cursive; font-weight: bold;">
+                "Thanks for coming into my life, Fiza Arooj." 🌹❤️
+            </p>
+            <p style="font-size: 0.95rem; margin-top: 15px;">
+                You turned my ordinary days into something extraordinarily sweet and beautiful. ✨
+            </p>
+            <button class="btn" onclick="nextStage(9)">Cake Gallery & Exit 📸</button>
+        </div>
+
+        <!-- STAGE 9: Cakes Gallery & Exit Button -->
+        <div class="stage-card" id="stage9">
+            <h1>Celebration Memories 🎂</h1>
+            <p>Sweet delicious cakes for the sweetest 18th Birthday Girl! 🍓</p>
+            <div class="gallery-grid">
+                <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=400&q=80" alt="Cake 1">
+                <img src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=400&q=80" alt="Cake 2">
+                <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=400&q=80" alt="Cake 3">
+                <img src="https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&w=400&q=80" alt="Cake 4">
+            </div>
+            <button class="btn" style="background: linear-gradient(45deg, #2b1055, #ff4d6d);" onclick="triggerExit()">Exit Website 💖</button>
+        </div>
+
+    </div>
+
+    <!-- Popup Warning for "No" Button -->
+    <div class="popup-overlay" id="noPopup">
+        <div class="popup-box">
+            <h2>Nice Try! 😜</h2>
+            <p>"No" is not an option for you, Fiza! Try again and press YES! ❤️</p>
+            <button class="btn" onclick="closePopup()">Okay, Okay! 💕</button>
+        </div>
+    </div>
+
+    <!-- Exit Screen Overlay -->
+    <div id="exitOverlay">
+        <h1>Thank You For Being My Everything ❤️</h1>
+        <p style="color: #ff8fa3; margin-top: 15px; font-size: 1.2rem;">Have the happiest 18th Birthday ever, Fiza Arooj! 🎂✨</p>
+    </div>
+
+    <script>
+        // Start background song on first click
+        document.addEventListener('click', function() {
+            var audio = document.getElementById('bgMusic');
+            if (audio.paused) {
+                audio.play();
+            }
+        }, { once: true });
+
+        // Navigation between stages
+        function nextStage(stageNumber) {
+            document.querySelectorAll('.stage-card').forEach(card => card.classList.remove('active'));
+            document.getElementById('stage' + stageNumber).classList.add('active');
+            
+            confetti({
+                particleCount: 50,
+                spread: 60,
+                origin: { y: 0.8 }
+            });
+        }
+
+        // Dodging "No" Button Strategy
+        function dodgeNo() {
+            const btnNo = document.getElementById('btnNo');
+            const x = Math.random() * (window.innerWidth - 120) - (window.innerWidth / 2 - 60);
+            const y = Math.random() * (window.innerHeight - 80) - (window.innerHeight / 2 - 40);
+            btnNo.style.transform = `translate(${x}px, ${y}px)`;
+        }
+
+        function showNoPopup() {
+            document.getElementById('noPopup').classList.add('show');
+        }
+
+        function closePopup() {
+            document.getElementById('noPopup').classList.remove('show');
+        }
+
+        function onYesClick() {
+            confetti({
+                particleCount: 150,
+                spread: 100,
+                origin: { y: 0.6 }
+            });
+            nextStage(3);
+        }
+
+        // Quiz Logic
+        function quizAnswer(isCorrect, feedbackText, targetStage) {
+            confetti({ particleCount: 40, spread: 70 });
+            setTimeout(() => {
+                nextStage(targetStage);
+            }, 700);
+        }
+
+        // Candle Blowing Action
+        let candleBlown = false;
+        function blowCandle() {
+            if (!candleBlown) {
+                document.getElementById('candleFlame').classList.add('off');
+                document.getElementById('candleStatus').innerText = "✨ Woohoo! Your 18th wish is sent to the stars! ✨";
+                document.getElementById('afterCakeBtn').style.display = 'inline-block';
+                candleBlown = true;
+
+                // Grand Fireworks Confetti
+                var duration = 3 * 1000;
+                var animationEnd = Date.now() + duration;
+                var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+                var interval = setInterval(function() {
+                    var timeLeft = animationEnd - Date.now();
+                    if (timeLeft <= 0) {
+                        return clearInterval(interval);
+                    }
+                    var particleCount = 50 * (timeLeft / duration);
+                    confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
+                }, 250);
+            }
+        }
+
+        // Exit Action
+        function triggerExit() {
+            document.getElementById('exitOverlay').classList.add('show');
+        }
+
+        // Floating Hearts Canvas Logic
+        const canvas = document.getElementById('heartCanvas');
+        const ctx = canvas.getContext('2d');
+        let hearts = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Heart {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + Math.random() * 100;
+                this.size = Math.random() * 15 + 10;
+                this.speed = Math.random() * 1.5 + 0.5;
+                this.opacity = Math.random() * 0.5 + 0.3;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.beginPath();
+                ctx.fillStyle = '#ff4d6d';
+                ctx.moveTo(this.x, this.y);
+                ctx.bezierCurveTo(this.x - this.size / 2, this.y - this.size / 2, this.x - this.size, this.y + this.size / 3, this.x, this.y + this.size);
+                ctx.bezierCurveTo(this.x + this.size, this.y + this.size / 3, this.x + this.size / 2, this.y - this.size / 2, this.x, this.y);
+                ctx.fill();
+                ctx.restore();
+            }
+
+            update() {
+                this.y -= this.speed;
+                if (this.y < -50) {
+                    this.y = canvas.height + 50;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+        }
+
+        for (let i = 0; i < 25; i++) {
+            hearts.push(new Heart());
+        }
+
+        function animateHearts() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            hearts.forEach(heart => {
+                heart.update();
+                heart.draw();
+            });
+            requestAnimationFrame(animateHearts);
+        }
+
+        animateHearts();
+    </script>
+</body>
+</html>
